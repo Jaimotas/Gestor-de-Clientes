@@ -3,6 +3,7 @@ package com.example.gestordeclientes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -12,8 +13,8 @@ class ClienteAdapter(
 ) : RecyclerView.Adapter<ClienteAdapter.ClienteViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(cliente: Cliente)
-        fun onItemLongClick(cliente: Cliente)
+        fun onEditClick(cliente: Cliente)
+        fun onDeleteClick(cliente: Cliente)
     }
 
     inner class ClienteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,19 +22,22 @@ class ClienteAdapter(
         val tvTelefono: TextView = itemView.findViewById(R.id.tvTelefono)
         val tvEmail: TextView = itemView.findViewById(R.id.tvEmail)
 
+        val btnEditar: Button = itemView.findViewById(R.id.btnEditar)
+        val btnEliminar: Button = itemView.findViewById(R.id.btnEliminar)
+
         init {
-            itemView.setOnClickListener {
-                listener.onItemClick(clientes[adapterPosition])
+            btnEditar.setOnClickListener {
+                listener.onEditClick(clientes[adapterPosition])
             }
-            itemView.setOnLongClickListener {
-                listener.onItemLongClick(clientes[adapterPosition])
-                true
+            btnEliminar.setOnClickListener {
+                listener.onDeleteClick(clientes[adapterPosition])
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClienteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_cliente, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_cliente, parent, false)
         return ClienteViewHolder(view)
     }
 
@@ -46,4 +50,3 @@ class ClienteAdapter(
 
     override fun getItemCount(): Int = clientes.size
 }
-

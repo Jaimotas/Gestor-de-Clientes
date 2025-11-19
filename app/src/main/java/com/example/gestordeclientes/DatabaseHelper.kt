@@ -19,11 +19,11 @@ class DatabaseHelper(context: Context) :
         val sql = """
             CREATE TABLE $TABLE(
             $COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            $COL_NOMBRE TEXT,
-            $COL_TELEFONO TEXT,
-            $COL_EMAIL TEXT
-            )
-        """
+            $COL_NOMBRE TEXT NOT NULL,
+            $COL_TELEFONO TEXT NOT NULL,
+            $COL_EMAIL TEXT NOT NULL
+            );
+        """.trimIndent()
         db.execSQL(sql)
     }
 
@@ -47,13 +47,12 @@ class DatabaseHelper(context: Context) :
     }
 
     fun actualizarCliente(id: Int, nombre: String, telefono: String, email: String): Int {
-        val db = writableDatabase
         val cv = ContentValues().apply {
             put(COL_NOMBRE, nombre)
             put(COL_TELEFONO, telefono)
             put(COL_EMAIL, email)
         }
-        return db.update(TABLE, cv, "$COL_ID=?", arrayOf(id.toString()))
+        return writableDatabase.update(TABLE, cv, "$COL_ID=?", arrayOf(id.toString()))
     }
 
     fun eliminarCliente(id: Int): Int {

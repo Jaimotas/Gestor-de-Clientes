@@ -22,8 +22,8 @@ class AddEditClienteActivity : AppCompatActivity() {
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val btnGuardar = findViewById<Button>(R.id.btnGuardar)
 
-        // Comprobar si viene un cliente para editar
         clienteId = intent.getIntExtra("id", 0)
+
         if (clienteId != 0) {
             etNombre.setText(intent.getStringExtra("nombre"))
             etTelefono.setText(intent.getStringExtra("telefono"))
@@ -31,23 +31,33 @@ class AddEditClienteActivity : AppCompatActivity() {
         }
 
         btnGuardar.setOnClickListener {
-            val nombre = etNombre.text.toString()
-            val telefono = etTelefono.text.toString()
-            val email = etEmail.text.toString()
+            val nombre = etNombre.text.toString().trim()
+            val telefono = etTelefono.text.toString().trim()
+            val email = etEmail.text.toString().trim()
 
-            if (nombre.isBlank() || telefono.isBlank() || email.isBlank()) {
+            if (nombre.isEmpty() || telefono.isEmpty() || email.isEmpty()) {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val exito = if (clienteId != null && clienteId != 0) {
+            if (telefono.length < 9) {
+                Toast.makeText(this, "El teléfono debe tener al menos 9 dígitos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Introduce un email válido", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val resultado = if (clienteId != 0) {
                 dbHelper.actualizarCliente(clienteId!!, nombre, telefono, email)
             } else {
                 dbHelper.insertarCliente(nombre, telefono, email)
             }
 
-            if (exito != 0L && exito != -1L) {
-                Toast.makeText(this, "Cliente guardado", Toast.LENGTH_SHORT).show()
+            if (resultado != -1) {
+                Toast.makeText(this, "Cliente guardado correctamente", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
