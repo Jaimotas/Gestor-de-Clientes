@@ -21,18 +21,8 @@ class ClienteAdapter(
         val tvNombre: TextView = itemView.findViewById(R.id.tvNombre)
         val tvTelefono: TextView = itemView.findViewById(R.id.tvTelefono)
         val tvEmail: TextView = itemView.findViewById(R.id.tvEmail)
-
         val btnEditar: Button = itemView.findViewById(R.id.btnEditar)
         val btnEliminar: Button = itemView.findViewById(R.id.btnEliminar)
-
-        init {
-            btnEditar.setOnClickListener {
-                listener.onEditClick(clientes[adapterPosition])
-            }
-            btnEliminar.setOnClickListener {
-                listener.onDeleteClick(clientes[adapterPosition])
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClienteViewHolder {
@@ -42,10 +32,19 @@ class ClienteAdapter(
     }
 
     override fun onBindViewHolder(holder: ClienteViewHolder, position: Int) {
-        val c = clientes[position]
-        holder.tvNombre.text = c.nombre
-        holder.tvTelefono.text = c.telefono
-        holder.tvEmail.text = c.email
+        val cliente = clientes[position]
+
+        holder.tvNombre.text = cliente.nombre
+        holder.tvTelefono.text = cliente.telefono
+        holder.tvEmail.text = cliente.email
+
+        holder.btnEditar.setOnClickListener {
+            listener.onEditClick(cliente)
+        }
+
+        holder.btnEliminar.setOnClickListener {
+            listener.onDeleteClick(cliente)
+        }
     }
 
     override fun getItemCount(): Int = clientes.size
