@@ -53,7 +53,7 @@ Una vez cambiados los datos, revisamos que se han cambiado los datos
 
 ![Editado](capturas/ClienteEditado.png)
 
-Al pulsar el botón de eliminar 
+Al pulsar el botón de eliminar nos sale el mensaje de confirmacion
 
 ![Borrar](capturas/BorrarCliente.png)
 
